@@ -21,8 +21,7 @@ public class ServiceManager {
     public ServiceManager() {
         loadApplicationProperties();
         dataSource = getDataSource();
-
-        articleService = new ArticleServiceImpl();
+        articleService = new ArticleServiceImpl(dataSource);
     }
 
     public static ServiceManager getInstance(ServletContext servletContext) {
@@ -60,5 +59,7 @@ public class ServiceManager {
         return properties.getProperty(key);
     }
 
-
+    public ArticleService getArticleService() {
+        return articleService;
+    }
 }
