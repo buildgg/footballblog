@@ -1,6 +1,7 @@
 package ua.com.footballblog.service;
 
 import ua.com.footballblog.entity.Article;
+import ua.com.footballblog.entity.Comment;
 
 import java.util.List;
 
@@ -10,4 +11,7 @@ import java.util.List;
 public interface ArticleService {
     List<Article> getArticlesOnPage(int page, int limit);
     Article getArticleById(int id);
+
+    List<Comment> getCommentsByArticle(int idArticle);
+
 }

@@ -2,7 +2,7 @@
 <div class="blog-masthead">
     <div class="container">
         <nav class="blog-nav">
-            <a class="blog-nav-item active" href="#">Home</a>
+            <a class="blog-nav-item active" href="/fblog">Home</a>
             <a class="blog-nav-item" href="#">Social network</a>
             <form class="blog-nav-item navbar-form">
                 <div class="form-group">

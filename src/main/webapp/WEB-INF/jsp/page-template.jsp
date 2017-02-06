@@ -30,14 +30,6 @@
 
     </div><!-- /.row -->
 
-   <%-- <div class="row">
-        <aside class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
-            <jsp:include page="fragment/aside.jsp" />
-        </aside>
-        <main class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-            &lt;%&ndash;<jsp:include page="${CURRENT_PAGE}" />&ndash;%&gt;
-        </main>
-    </div>--%>
 </div>
 <footer class="footer">
     <jsp:include page="fragment/footer.jsp" />

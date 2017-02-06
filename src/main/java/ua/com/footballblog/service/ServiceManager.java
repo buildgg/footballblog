@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory;
 import ua.com.footballblog.service.impl.ArticleServiceImpl;
 
 import javax.servlet.ServletContext;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class ServiceManager {
@@ -61,5 +63,13 @@ public class ServiceManager {
 
     public ArticleService getArticleService() {
         return articleService;
+    }
+
+    public void close(){
+        try{
+            dataSource.close();
+        } catch (SQLException e) {
+            LOGGER.error(":::: DataSource don't close ::: ", e.getMessage(),e);
+        }
     }
 }

@@ -3,7 +3,7 @@
 
 <c:forEach  var="article_list" items="${articles_on_page}">
 <h4 class="blog-post-title">
-    <a href="/current-article" class="a-black">${article_list.header}</a>
+    <a href="/current-article?id=${article_list.id}" class="a-black">${article_list.header}</a>
 </h4>
 <nav>
     <ul class="blog-post-meta">
@@ -19,10 +19,11 @@
 <nav>
     <ul class="blog-post-sign">
         <li><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-            <a href="/current-article"> Читать далее</a>
+            <a href="/current-article?id=${article_list.id}"> Читать далее</a>
         </li>
         <li class="navbar-right"><i class="fa fa-comment" aria-hidden="true"></i>
-            <a href="#"> Комментарии</a><span class="badge">${article_list.countComments}</span>
+            <a href="/current-article?id=${article_list.id}"> Комментарии</a>
+            <span class="badge">${article_list.countComments}</span>
         </li>
     </ul>
 </nav>

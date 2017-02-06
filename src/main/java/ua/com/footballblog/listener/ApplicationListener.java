@@ -26,6 +26,7 @@ public class ApplicationListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        serviceManager.close();
         LOGGER.info("::: Destroyed FBlog");
     }
 }

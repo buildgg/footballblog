@@ -16,4 +16,7 @@ public final class Route {
         req.getRequestDispatcher("/WEB-INF/jsp/page-template.jsp").forward(req, resp);
 
     }
+    public static final void redirect(String url, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.sendRedirect(url);
+    }
 }

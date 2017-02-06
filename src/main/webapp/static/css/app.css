@@ -100,8 +100,6 @@ ul.blog-post-sign li > a:hover
     font-weight: 500;
     /*color: #cdddeb;*/
     color: #8BC080;
-
-
     font-size: 25px;
     padding-left: 50px;
 }
@@ -140,6 +138,9 @@ ul.blog-post-sign li > a:hover
     padding-bottom: 5px;
     text-align: center;
    /* background-color: #146902;*/
+}
+.blog-header a:hover{
+    text-decoration: none;
 }
 .blog-title {
     margin-top: 5px;
@@ -243,3 +244,35 @@ ul.blog-post-sign li > a:hover
     background-color: #777;
     border-radius: 10px;
 }
+.one-comment{
+    margin-top: 30px;
+    font-size: 20px;
+}
+.user-name{
+    color: rgb(29, 103, 164);
+    margin-left: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+.title-comment, .write-comment{
+    margin-top: 20px;
+    font-size: 25px;
+    font-weight: 700;
+}
+hr.underline-article{
+    color: #146902;
+
+}
+.input-comment{
+    margin-top: 25px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+
+
+
+
+
+
+
