@@ -5,7 +5,7 @@
 </div>
 <nav>
   <ul class="pager">
-    <li><a href="#">Previous</a></li>
-    <li><a href="#">Next</a></li>
+    <li class="previous disabled"><a href="#">Previous</a></li>
+    <li class="next"><a href="#">Next</a></li>
   </ul>
 </nav>

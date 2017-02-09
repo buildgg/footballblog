@@ -83,7 +83,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article getArticleById(int id) {
-        String sql = "select a.created, a.header, a.text, a.url_img, c.name category_name " +
+        String sql = "select a.id articleid, a.created, a.header, a.text, a.url_img, c.name category_name " +
                 "from article a, category c " +
                 "where a.categoryid = c.id and a.id = ?";
         Article article = new Article();
@@ -98,6 +98,7 @@ public class ArticleServiceImpl implements ArticleService {
                 article.setText(rs.getString("text"));
                 article.setUrlImg(rs.getString("url_img"));
                 article.setCategory(rs.getString("category_name"));
+                article.setId(rs.getInt("articleid"));
 
             }
         } catch (SQLException e) {
@@ -108,7 +109,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Comment> getCommentsByArticle(int idArticle) {
-        String sql = "select com.username, com.message, com.articleid " +
+        String sql = "select com.username, com.message, com.articleid, com.id " +
                 "from comment com where com.articleid = ?";
 
         List<Comment> commentList = new ArrayList<>();
@@ -120,6 +121,8 @@ public class ArticleServiceImpl implements ArticleService {
                 comment.setArticleId(rs.getInt("articleid"));
                 comment.setUserName(rs.getString("username"));
                 comment.setMessage(rs.getString("message"));
+                comment.setId(rs.getInt("id"));
+
                 commentList.add(comment);
 
             }
@@ -129,8 +132,36 @@ public class ArticleServiceImpl implements ArticleService {
         return commentList;
     }
 
-    private PreparedStatement createPreparedStatement(Connection c, String sql, Object... params) throws SQLException {
-        PreparedStatement ps = c.prepareStatement(sql);
+    @Override
+    public void addComment(Comment comment) {
+        String sql = "insert into comment(id, username, articleid,  message) " +
+                "values (nextval('comment_seq'),?,?,?)";
+        try (Connection c = dataSource.getConnection();
+             PreparedStatement ps = createPreparedStatement(c, sql,
+                     comment.getUserName(),
+                     comment.getArticleId(),
+                     comment.getMessage());
+        ) {
+            int result = ps.executeUpdate();
+            if (result != 1) {
+                throw new SQLException("Can't insert row to database. Result=" + result);
+            }
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                comment.setId(rs.getInt("id"));
+                c.commit();
+            } else {
+                throw new RuntimeException("Error with Result Set");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private PreparedStatement createPreparedStatement(Connection c, String sql, Object... params)
+            throws SQLException {
+        PreparedStatement ps = c.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
         for (int i = 0; i < params.length; i++) {
             ps.setObject(i + 1, params[i]);
         }

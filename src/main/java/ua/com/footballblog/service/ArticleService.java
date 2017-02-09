@@ -14,4 +14,6 @@ public interface ArticleService {
 
     List<Comment> getCommentsByArticle(int idArticle);
 
+    void addComment (Comment comment);
+
 }

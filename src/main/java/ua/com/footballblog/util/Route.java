@@ -1,5 +1,7 @@
 package ua.com.footballblog.util;
 
+import org.json.JSONObject;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,5 +20,10 @@ public final class Route {
     }
     public static final void redirect(String url, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.sendRedirect(url);
+    }
+    public static final void sendJSON(JSONObject json, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        response.getWriter().print(json.toString());
+        response.getWriter().close();
     }
 }
