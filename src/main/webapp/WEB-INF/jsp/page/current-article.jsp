@@ -18,8 +18,7 @@
   <hr class="underline-article">
   <div class="comments">
     <i class="fa fa-comments title-comment" aria-hidden="true">Комментарии</i>
-    <span class="badge" <%--data-count-comments="${COUNT_COMMENTS}"--%>
-          id="count-comments">${COUNT_COMMENTS}</span>
+    <span class="badge" id="count-comments">${COUNT_COMMENTS}</span>
     <jsp:include page="../fragment/comments-list.jsp"/>
   </div>
 

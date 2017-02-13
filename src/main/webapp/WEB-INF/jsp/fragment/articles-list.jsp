@@ -8,7 +8,9 @@
 <nav>
     <ul class="blog-post-meta">
         <li>${article_list.created} </li>
-        <li class="navbar-right"><i class="fa fa-bookmark" aria-hidden="true"></i><a href="#"> ${article_list.category} </a></li>
+        <li class="navbar-right"><i class="fa fa-bookmark" aria-hidden="true"></i>
+            <a href="/fblog${article_list.category_url}"> ${article_list.category} </a>
+        </li>
     </ul>
 </nav>
 

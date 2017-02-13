@@ -1,7 +1,12 @@
 package ua.com.footballblog.service.impl;
 
 import ua.com.footballblog.entity.Article;
+import ua.com.footballblog.entity.Category;
 import ua.com.footballblog.entity.Comment;
+import ua.com.footballblog.jdbc.JDBCUtil;
+import ua.com.footballblog.jdbc.handlers.ArticlesOnPageHandler;
+import ua.com.footballblog.jdbc.handlers.CategoryHandler;
+import ua.com.footballblog.jdbc.handlers.CountHandler;
 import ua.com.footballblog.service.ArticleService;
 
 import javax.sql.DataSource;
@@ -26,37 +31,8 @@ public class ArticleServiceImpl implements ArticleService {
     public List<Article> getArticlesOnPage(int page, int limit) {
         int offset = getOffset(page, limit);
 
-        String sql = "select i.categoryid,\n" +
-                "       i.count_comment,\n" +
-                "       i.created,\n" +
-                "       i.description,\n" +
-                "       i.header,\n" +
-                "       i.id articleid,\n" +
-                "       i.text,\n" +
-                "       i.url_img,\n" +
-                "       c.name category_name\n" +
-                "from (\n" +
-                "       select a.categoryid,\n" +
-                "              a.created,\n" +
-                "              a.description,\n" +
-                "              a.header,\n" +
-                "              a.id,\n" +
-                "              a.text,\n" +
-                "              a.url_img,\n" +
-                "              count(com.id) count_comment\n" +
-                "       from article a\n" +
-                "            LEFT OUTER JOIN comment com ON (a.id = com.articleid)\n" +
-                "       group by a.categoryid,\n" +
-                "                a.created,\n" +
-                "                a.description,\n" +
-                "                a.header,\n" +
-                "                a.id,\n" +
-                "                a.text,\n" +
-                "                a.url_img\n" +
-                "     ) i,\n" +
-                "     category c\n" +
-                "where i.categoryid = c.id " +
-                "limit ? offset ?";
+        String sql = "select categoryid, count_comment, created, description, header, articleid, " +
+                "text, url_img, category_name, category_url from varticlesonpage limit ? offset ? ";
         List<Article> listArticles = new ArrayList();
         try (Connection c = dataSource.getConnection();
              PreparedStatement ps = createPreparedStatement(c, sql, limit, offset);
@@ -71,6 +47,7 @@ public class ArticleServiceImpl implements ArticleService {
                 article.setText(rs.getString("text"));
                 article.setUrlImg(rs.getString("url_img"));
                 article.setCategory(rs.getString("category_name"));
+                article.setCategory_url(rs.getString("category_url"));
                 listArticles.add(article);
             }
 
@@ -136,6 +113,7 @@ public class ArticleServiceImpl implements ArticleService {
     public void addComment(Comment comment) {
         String sql = "insert into comment(id, username, articleid,  message) " +
                 "values (nextval('comment_seq'),?,?,?)";
+
         try (Connection c = dataSource.getConnection();
              PreparedStatement ps = createPreparedStatement(c, sql,
                      comment.getUserName(),
@@ -159,6 +137,62 @@ public class ArticleServiceImpl implements ArticleService {
         }
     }
 
+    @Override
+    public int getCountArticle() {
+        String sql = "select count(*) from article";
+        try (Connection c = dataSource.getConnection();
+             PreparedStatement ps = createPreparedStatement(c, sql);
+             ResultSet rs = ps.executeQuery();) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            } else {
+                return 0;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public List<Category> getListCategory() {
+        String sql = "select id, name, url from category";
+        try (Connection c = dataSource.getConnection();) {
+            List<Category> categoryList = JDBCUtil.select(dataSource.getConnection(), sql, new CategoryHandler());
+            return categoryList;
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public List<Article> getArticlesByCatogory(String url, int page, int limit) {
+      String sql = "select categoryid, count_comment, created, description, header, articleid, " +
+              "text, url_img, category_name, category_url from varticlesonpage where category_url = ? " +
+              " limit ? offset ? ";
+        int offset = getOffset(page, limit);
+        try(Connection c = dataSource.getConnection()) {
+            return JDBCUtil.select(c,sql, new ArticlesOnPageHandler(), url, limit, offset);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getCountArticleByCatogory(String url) {
+        String sql = "select count (a.id) count_article " +
+                "from article a, category c " +
+                "where a.categoryid = c.id " +
+                "and c.url = ?";
+
+        try (Connection c = dataSource.getConnection()) {
+            return JDBCUtil.select(c, sql, new CountHandler(), url);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private PreparedStatement createPreparedStatement(Connection c, String sql, Object... params)
             throws SQLException {
         PreparedStatement ps = c.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -172,14 +206,3 @@ public class ArticleServiceImpl implements ArticleService {
         return (page - 1) * limit;
     }
 }
-
-
-
-
-
-
-
-
-
-
-

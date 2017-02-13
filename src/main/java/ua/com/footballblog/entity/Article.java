@@ -14,6 +14,15 @@ public class Article extends AbstractEntity<Integer> {
     private String text;
     private String urlImg;
     private int countComments;
+    private String category_url;
+
+    public String getCategory_url() {
+        return category_url;
+    }
+
+    public void setCategory_url(String category_url) {
+        this.category_url = category_url;
+    }
 
     public int getCountComments() {
         return countComments;
@@ -89,7 +98,10 @@ public class Article extends AbstractEntity<Integer> {
                 ", description='" + description + '\'' +
                 ", text='" + text + '\'' +
                 ", urlImg='" + urlImg + '\'' +
-               /* ", commentList=" + commentList +*/
+                ", countComments=" + countComments +
+                ", category_url='" + category_url + '\'' +
                 '}';
     }
+
 }
+

@@ -1,5 +1,6 @@
-package ua.com.footballblog.controller;
+package ua.com.footballblog.controller.page;
 
+import ua.com.footballblog.controller.AbstractController;
 import ua.com.footballblog.entity.Article;
 import ua.com.footballblog.entity.Comment;
 import ua.com.footballblog.util.Route;

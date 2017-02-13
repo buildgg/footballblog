@@ -30,4 +30,22 @@ public abstract class AbstractController extends HttpServlet {
         comment.setMessage(request.getParameter("comment"));
         return comment;
     }
+ /*   private int getCountArticle(){
+        return getArticleService().getCountArticle();
+    }*/
+
+    public final int getCountPage(int countArticle, int articleOnPage){
+        int onPage = countArticle/articleOnPage;
+       if (onPage * articleOnPage != countArticle){
+        onPage++;
+       }
+        return onPage;
+    }
+    public final int getPageParam(HttpServletRequest request){
+        try{
+            return Integer.parseInt(request.getParameter("page"));
+        }catch(NumberFormatException e){
+            return 1;
+        }
+    }
 }

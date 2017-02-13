@@ -1,6 +1,7 @@
 package ua.com.footballblog.service;
 
 import ua.com.footballblog.entity.Article;
+import ua.com.footballblog.entity.Category;
 import ua.com.footballblog.entity.Comment;
 
 import java.util.List;
@@ -15,5 +16,13 @@ public interface ArticleService {
     List<Comment> getCommentsByArticle(int idArticle);
 
     void addComment (Comment comment);
+
+    int getCountArticle ();
+
+    List<Category> getListCategory();
+
+    List<Article> getArticlesByCatogory(String url, int page, int limit);
+    int getCountArticleByCatogory (String url);
+
 
 }

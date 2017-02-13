@@ -5,6 +5,7 @@ package ua.com.footballblog.entity;
  */
 public class Category extends AbstractEntity<Integer> {
     private String name;
+    private String url;
 
     public String getName() {
         return name;
@@ -14,10 +15,19 @@ public class Category extends AbstractEntity<Integer> {
         this.name = name;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     public String toString() {
         return "Category{" +
                 "name='" + name + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }
