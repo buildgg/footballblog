@@ -24,5 +24,8 @@ public interface ArticleService {
     List<Article> getArticlesByCatogory(String url, int page, int limit);
     int getCountArticleByCatogory (String url);
 
+    List<Article> getArticleBySearch(String search,  int page, int limit);
+    int getCountArticleBySearch (String search);
+
 
 }

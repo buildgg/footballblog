@@ -193,6 +193,33 @@ public class ArticleServiceImpl implements ArticleService {
         }
     }
 
+    @Override
+    public List<Article> getArticleBySearch(String search, int page, int limit) {
+       String sql = "select categoryid, count_comment, created, description, header, articleid, " +
+               "text, url_img, category_name, category_url from varticlesonpage " +
+               "where (description ilike ? or header ilike ?) " +
+               "limit ? offset ? ";
+        int offset = getOffset(page, limit);
+        try(Connection c = dataSource.getConnection()) {
+            return JDBCUtil.select(c, sql, new ArticlesOnPageHandler(),
+                    "%"+search+"%", "%"+search+"%", limit, offset);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getCountArticleBySearch(String search) {
+        String sql = "select count(*) from varticlesonpage " +
+                "where (description ilike ? or header ilike ?)";
+        try(Connection c = dataSource.getConnection()) {
+            return JDBCUtil.select(c, sql, new CountHandler(),
+                    "%"+search+"%", "%"+search+"%");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private PreparedStatement createPreparedStatement(Connection c, String sql, Object... params)
             throws SQLException {
         PreparedStatement ps = c.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
